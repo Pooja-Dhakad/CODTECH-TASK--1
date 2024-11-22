@@ -1,0 +1,102 @@
+/*TASK- Simpal game development
+GAME DECRIPTION- A simaple taxt-based game that challenges te user to choose one of two options.
+FEATURES- 1. Two-option game 
+          2. Score tracking 
+          3. Game over condition */
+#include <stdio.h>
+#include <string.h>
+
+// Function prototypes
+void displayIntro();
+void displayRoom(int roomNumber);
+int processChoice(int roomNumber, int *score);
+
+int main() {
+    int currentRoom = 1; // Start at room 1
+    int score = 0;       // Initialize score
+
+    displayIntro();
+
+    // Game loop
+    while (currentRoom != 0) {
+        displayRoom(currentRoom);
+        currentRoom = processChoice(currentRoom, &score);
+    }
+
+    // End game
+    printf("\n--- GAME OVER ---\n");
+    printf("Your final score: %d\n", score);
+    return 0;
+}
+
+void displayIntro() {
+    printf("Welcome to the Text Adventure Game!\n");
+    printf("Navigate through the rooms and earn points.\n");
+    printf("Type your choice when prompted.\n");
+    printf("Good luck!\n\n");
+}
+
+void displayRoom(int roomNumber) {
+    switch (roomNumber) {
+        case 1:
+            printf("You are in a dark forest. Two paths lie ahead:\n");
+            printf("1. Take the left path.\n");
+            printf("2. Take the right path.\n");
+            break;
+        case 2:
+            printf("You find yourself at a riverbank. What will you do?\n");
+            printf("1. Try to swim across.\n");
+            printf("2. Look for a bridge.\n");
+            break;
+        case 3:
+            printf("You enter a mysterious cave. It's very dark inside.\n");
+            printf("1. Light a torch.\n");
+            printf("2. Proceed without a light.\n");
+            break;
+    }
+}
+
+int processChoice(int roomNumber, int *score) {
+    int choice;
+    printf("Enter your choice: ");
+    scanf("%d", &choice);
+
+    switch (roomNumber) {
+        case 1:
+            if (choice == 1) {
+                printf("You encounter a friendly deer and earn 10 points.\n");
+                *score += 10;
+                return 2;
+            } else if (choice == 2) {
+                printf("You fall into a pit! Lose 5 points.\n");
+                *score -= 5;
+                return 3;
+            }
+            break;
+        case 2:
+            if (choice == 1) {
+                printf("You are swept away by the current. Game over!\n");
+                *score -= 10;
+                return 0;
+            } else if (choice == 2) {
+                printf("You safely cross the river using a bridge. Earn 10 points.\n");
+                *score += 10;
+                return 3;
+            }
+            break;
+        case 3:
+            if (choice == 1) {
+                printf("You light a torch and find a hidden treasure. Earn 20 points!\n");
+                *score += 20;
+                return 0;
+            } else if (choice == 2) {
+                printf("You stumble in the dark and fall. Game over!\n");
+                *score -= 10;
+                return 0;
+            }
+            break;
+    }
+
+    printf("Invalid choice. Try again.\n");
+    return roomNumber; // Stay in the current room
+}
